@@ -16,9 +16,9 @@ var shadow = require('./shadow');
 //
 function start() {
     var params = {
-        keyPath: "RPi1.private.key",
-        certPath: "RPi1.cert.pem",
-        caPath: "root-CA.crt",
+        keyPath: "./keys/RPi1.private.key",
+        certPath: "./keys/RPi1.cert.pem",
+        caPath: "./keys/root-CA.crt",
         clientId: "RPi1",
         region: "eu-west-1"
     };
