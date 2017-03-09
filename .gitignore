@@ -1,2 +1,14 @@
-**RPi1.**
-keys
+.DS_Store
+**/node_modules/**
+npm-debug.log
+eqsimulator.zip
+
+# serverless zip
+**/.serverless/
+**/.zip
+
+# build
+build/
+*.key
+*.pem
+*.crt
