@@ -6,6 +6,7 @@ var network = require('network');
 var geoip = require('geoip-lite');
 var AWS = require('aws-sdk');
 
+
 function start(thingShadows) {
 
     return new Promise((resolve, reject) => {
@@ -32,6 +33,8 @@ function start(thingShadows) {
 
                 var geo = geoip.lookup(ip_x);
                 var locationState = geo;
+                process.env.LAT = locationState.ll[0];
+                process.env.LON = locationState.ll[1];
                 var deviceState = {
                     "state": {
                         "desired": {
@@ -81,6 +84,8 @@ function start(thingShadows) {
             function(thingName, clientToken) {
                 console.log('received timeout on ' + thingName +
                     ' with token: ' + clientToken);
+                reject('received timeout on ' + thingName +
+                    ' with token: ' + clientToken)
             });
     });
 }

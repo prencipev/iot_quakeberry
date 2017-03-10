@@ -4,6 +4,7 @@ var network = require('network');
 var geoip = require('geoip-lite');
 var AWS = require('aws-sdk');
 var shadow = require('./shadow');
+var geolib = require('geolib');
 
 
 //
@@ -23,24 +24,30 @@ function start() {
         region: "eu-west-1"
     };
 
-    var thingCommunicator = awsIot.thingShadow(params);
 
+    var thingCommunicator = awsIot.thingShadow(params);
     shadow(thingCommunicator).then(data => {
             console.log('connect');
             thingCommunicator.publish('shadow/topic', JSON.stringify(data));
-            thingCommunicator.publish('simulator/topic', JSON.stringify(data));
+            //thingCommunicator.publish('simulator/topic', JSON.stringify(data));
             thingCommunicator.subscribe('analyzer/topic');
         })
         .catch(err => {
             console.log(err);
         });
+
     thingCommunicator.on('message', function(topic, payload) {
+        var eq = JSON.parse(payload);
+        var evLoc = { latitude: eq.geometry.coordinates[0], longitude: eq.geometry.coordinates[1] };
+        var devLoc = { latitude: process.env.LAT, longitude: process.env.LON };
+        var distance = geolib.getDistance(evLoc, devLoc);
+        console.log('distance in meters', distance);
+        console.log('distance in Km', parseInt(distance) / 1000);
         console.log('message', topic, payload.toString());
     });
 }
 
 module.exports = start;
 
-if (require.main === module) {
-    start();
-}
+
+start();
