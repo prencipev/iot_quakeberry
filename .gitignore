@@ -5,9 +5,7 @@ npm-debug.log
 # serverless zip
 **/.serverless/
 **/.zip
-*.pem
-*.key
-*.crt
+
 
 # build
 build/
